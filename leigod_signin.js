@@ -1,8 +1,3 @@
-/*
-  cron 0 58 0 * * * leigod_signin.js
-  LeiGod_Acc auto pause
- */
-
 const $ = new Env('LeiGod_Acc auto pause if host is offline');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const fetch = require('node-fetch');
@@ -59,11 +54,11 @@ function pingHost() {
 
     if (isHostOnline) {
         // 如果主机在线，不执行暂停操作
-        console.log('Host is online. Skipping pause operation.');
+        console.log('主机在线，不执行操作');
         
     } else {
         // 如果主机离线，执行暂停操作
-        console.log('Host is offline. Performing pause operation.');
+        console.log('主机离线，执行暂停操作');
         pauseLeiGodAccount();
         // 其余代码保持不变
         // ...
@@ -74,7 +69,7 @@ const pauseLeiGodAccount = async () => {
     try {
         // Check username and password
         if (!Secrets.username || !Secrets.password) {
-            throw new Error('Empty username or password');
+            throw new Error('账号或密码为空');
         }
 
         // Login
@@ -86,7 +81,7 @@ const pauseLeiGodAccount = async () => {
         const loginData = await loginResponse.json();
 
         if (loginData.code !== 0) {
-            throw new Error(`Login API returned code ${loginData.code}, message: ${loginData.msg}`);
+            throw new Error(`错误，登录API返回代码 ${loginData.code}, 信息: ${loginData.msg}`);
         }
 
         const token = loginData.data.login_info.account_token;
@@ -109,13 +104,13 @@ const pauseLeiGodAccount = async () => {
         // Handle pause response
         if (pauseData.code === 400803) {
             if (repeat_notify) {
-                notify.sendNotify('LeiGod_Acc SUCCEED PAUSE', pauseData.msg);
+                notify.sendNotify('雷神加速器自动暂停：', pauseData.msg);
             }
         } else {
-            notify.sendNotify('LeiGod_Acc SUCCEED PAUSE', pauseData.msg);
+            notify.sendNotify('雷神加速器自动暂停：', pauseData.msg);
         }
     } catch (error) {
-        notify.sendNotify('LeiGod_Acc ERROR', error.message);
+        notify.sendNotify('雷神加速器自动暂停，出错：', error.message);
     }
 };
 
