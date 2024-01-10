@@ -3,6 +3,13 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const fetch = require('node-fetch');
 const md5 = require('js-md5');
 const { exec } = require('child_process');
+const now = new Date();
+const currentHour = now.getHours();
+const currentMinute = now.getMinutes();
+// 设置想要输出的时间点
+const targetHour = 09;
+const targetMinute = 20;
+
 
 const userinfo = process.env.LEISHEN_USER || 'username=&password=';
 const repeat_notify = String(process.env.LEISHEN_REPEAT_NOTIFY || 'true').toLocaleLowerCase() === 'true';
@@ -106,6 +113,9 @@ const pauseLeiGodAccount = async () => {
         console.log(`Expiry Time: ${expiry_time}`);
         console.log(`Pause Status ID: ${pause_status_id}`);
         console.log(`Last Pause Time: ${last_pause_time}`);
+        const expiry_time_hours = parseFloat(expiry_time);
+        const expiry_time_days = Math.round(expiry_time_hours / 24);
+
 
         // Check if pause_status_id is 0
         if (pause_status_id === 0) {
@@ -123,18 +133,22 @@ const pauseLeiGodAccount = async () => {
             const pauseData = await pauseResponse.json();
 
             console.log(pauseData);
-
+            
             // Handle pause response
             if (pauseData.code === 400803) {
                 if (repeat_notify) {
-                notify.sendNotify('雷神加速器自动暂停：', `用户：${nickname}，剩余时长：${expiry_time}，上次暂停时间：${last_pause_time}，本次暂停操作状态：${pauseData.msg}`);
+                notify.sendNotify('雷神加速器自动暂停：', `用户：${nickname}，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}，本次暂停操作状态：${pauseData.msg}`);
                 }
             } else {
-                notify.sendNotify('雷神加速器自动暂停：', `用户：${nickname}，剩余时长：${expiry_time}，上次暂停时间：${last_pause_time}，本次暂停操作状态：${pauseData.msg}`);
+                notify.sendNotify('雷神加速器自动暂停：', `用户：${nickname}，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}，本次暂停操作状态：${pauseData.msg}`);
             }
         } else {
             // Return and notify user if pause_status_id is not 0
-            console.log(`用户：${nickname} 已是暂停状态，剩余时长：${expiry_time}，上次暂停时间：${last_pause_time}`);
+            console.log(`用户：${nickname} 已是暂停状态，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}`);
+            if (currentHour === targetHour) {
+              notify.sendNotify('雷神加速器自动暂停：', `用户:${nickname} 已是暂停状态\n剩余时长：${expiry_time}（约${expiry_time_days}天）\n上次暂停时间：${last_pause_time}`);
+            } else {
+            }
             return;
         }
     } catch (error) {
