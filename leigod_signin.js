@@ -1,6 +1,7 @@
 /*
-const $ = new Env('雷神加速器自动暂停');
 cron: 20 */1 * * *
+const $ =new Env('雷神加速器自动暂停');
+
 */
 
 //环境变量名为LEISHEN_USER, 内容格式为username=&password=
