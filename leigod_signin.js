@@ -3,7 +3,7 @@
 // 设置想要输出的时间点，这样只有在指定时间会推送通知，其余时间不会通知
 const targetHour = 09;
 const targetMinute = 20;
-
+cron: 10 * * * *
 const $ = new Env('雷神加速器自动暂停');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const fetch = require('node-fetch');
