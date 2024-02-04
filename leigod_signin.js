@@ -4,7 +4,7 @@
 const targetHour = 09;
 const targetMinute = 20;
 
-const $ = new Env('LeiGod_Acc auto pause if host is offline');
+const $ = new Env('雷神加速器自动暂停');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const fetch = require('node-fetch');
 const md5 = require('js-md5');
