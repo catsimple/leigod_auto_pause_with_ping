@@ -140,23 +140,24 @@ const pauseLeiGodAccount = async () => {
             
             // Handle pause response
             if (pauseData.code === 400803) {
-                if (repeat_notify) {
                 notify.sendNotify('雷神加速器自动暂停：', `用户：${nickname}，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}，本次暂停操作状态：${pauseData.msg}`);
-                }
-            } else {
-                notify.sendNotify('雷神加速器自动暂停：', `用户：${nickname}，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}，本次暂停操作状态：${pauseData.msg}`);
-            }
         } else {
-            // Return and notify user if pause_status_id is not 0
-            console.log(`用户：${nickname} 已是暂停状态，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}`);
-            if (currentHour === targetHour) {
-              notify.sendNotify('雷神加速器自动暂停：', `用户:${nickname} 已是暂停状态\n剩余时长：${expiry_time}（约${expiry_time_days}天）\n上次暂停时间：${last_pause_time}`);
-            } else {
-            }
-            return;
+                if (repeat_notify) {
+                console.log(`用户：${nickname} 已是暂停状态，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}`);
+                notify.sendNotify('雷神加速器自动暂停：', `用户:${nickname} 已是暂停状态\n剩余时长：${expiry_time}（约${expiry_time_days}天）\n上次暂停时间：${last_pause_time}`);
+                } else {
+                console.log(`用户：${nickname} 已是暂停状态，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}`);
+                }
+                console.log(`用户：${nickname} 已是暂停状态，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}`);
+                if (currentHour === targetHour) {
+                notify.sendNotify('雷神加速器自动暂停：', `用户:${nickname} 已是暂停状态\n剩余时长：${expiry_time}（约${expiry_time_days}天）\n上次暂停时间：${last_pause_time}`);
+                } else {
+                }
+                return;
         }
     } catch (error) {
-        notify.sendNotify('雷神加速器自动暂停，出错：', error.message);
+        notify.sendNotify('雷神加速器自动暂停，出错：' + error.message);
+        console.log('雷神加速器自动暂停，出错：' + error.message);
     }
 
 };
