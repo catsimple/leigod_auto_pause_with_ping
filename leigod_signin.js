@@ -1,4 +1,3 @@
-//需要node-fetch@2.6.2
 //环境变量名为LEISHEN_USER, 内容格式为username=&password=
 //LEISHEN_REPEAT_NOTIFY（该变量暂时不可用）：是否开启重复暂停通知，默认为false，只有在当前账号未暂停时，首次暂停才会推送通知。将其设置为true则不管当前账号是否已经在任务执行前暂停，开启后即每次执行任务都会推送通知.
 // 设置想要输出的时间点，这样只有在指定时间会推送通知，其余时间不会通知
@@ -12,7 +11,7 @@ cron: 20 * * * *
 */
 
 const notify = $.isNode() ? require('./sendNotify') : '';
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const md5 = require('js-md5');
 const { exec } = require('child_process');
 const now = new Date();
