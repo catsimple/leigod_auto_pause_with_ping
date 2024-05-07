@@ -138,7 +138,7 @@ const pauseLeiGodAccount = async () => {
             // Return and notify user if pause_status_id is not 0
             console.log(`用户：${nickname} 已是暂停状态，剩余时长：${expiry_time}（约${expiry_time_days}天），上次暂停时间：${last_pause_time}`);
             if (currentHour === targetHour) {
-              notify.sendNotify('雷神加速器自动暂停：', `用户:${nickname} 已是暂停状态\n剩余时长：${expiry_time}（约${expiry_time_days}天）\n上次暂停时间：${last_pause_time}`);
+              notify.sendNotify('雷神加速器自动暂停：', `用户：${nickname} 已是暂停状态\n剩余时长：${expiry_time}（约${expiry_time_days}天）\n上次暂停时间：${last_pause_time}`);
             } else {
             }
             return;
