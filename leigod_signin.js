@@ -31,14 +31,19 @@ const Secrets = {
     password: md5(userinfo.split('&')[1].split('=')[1].trim()),
 };
 const headers = {
-    'content-type': 'application/json; charset=utf-8',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
-    'accept-encoding': 'gzip, deflate, br',
-    'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-    'sec-ch-ua': '"Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"',
-    'sec-ch-ua-mobile': '?0',
-    referer: 'https://webapi.leigod.com/',
-    accept: '*/*'
+    'User-Agent': 'Mozilla/5.0 (Linux; Android 14; 2206122SC Build/UKQ1.231003.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/122.0.6261.120 Mobile Safari/537.36 XWEB/1220099 MMWEBSDK/20240104 MMWEBID/1615 MicroMessenger/8.0.48.2589(0x28003044) WeChat/arm64 Weixin GPVersion/1 NetType/WIFI Language/zh_CN ABI/arm64',
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json',
+    'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Android WebView";v="122"',
+    'sec-ch-ua-mobile': '?1',
+    'sec-ch-ua-platform': '"Android"',
+    'origin': 'https://www.leigod.com',
+    'x-requested-with': 'com.tencent.mm',
+    'sec-fetch-site': 'same-site',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-dest': 'empty',
+    'referer': 'https://www.leigod.com/',
+    'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7'
 };
 const user = {
     account_token: null,
@@ -48,7 +53,9 @@ const user = {
     region_code: 1,
     src_channel: "guanwang",
     user_type: "0",
-    username: Secrets.username
+    code: "",
+    username: Secrets.username,
+    os_type: 5
 };
 function pingHost() {
     return new Promise((resolve, reject) => {
@@ -72,7 +79,7 @@ const pauseLeiGodAccount = async () => {
         }
 
         // Login
-        const loginResponse = await fetch('https://webapi.leigod.com/api/auth/login', {
+        const loginResponse = await fetch('https://webapi.leigod.com/wap/login/bind', {
             headers,
             method: 'POST',
             body: JSON.stringify(user),
@@ -91,12 +98,12 @@ const pauseLeiGodAccount = async () => {
             credentials: 'include',
             body: JSON.stringify({
                 "account_token": token,
-                "lang": "zh_CN"
+                "lang": "zh_CN",
+                "os_type": 5
             }),
         });
 
         const userInfoData = await userInfoResponse.json();
-
         // Extract required information
         const { nickname, expiry_time, pause_status_id, last_pause_time } = userInfoData.data;
 
@@ -118,7 +125,8 @@ const pauseLeiGodAccount = async () => {
                 credentials: 'include',
                 body: JSON.stringify({
                     "account_token": token,
-                    "lang": "zh_CN"
+                    "lang": "zh_CN",
+                    "os_type": 5
                 }),
             });
 
